@@ -95,21 +95,67 @@ const GameController = function (
     
     let gameResult = '';
 
-    //Check each of the rows
-    for (let i = 0; i < board.length; i++) {
-      const firstToken = board[i][0].getValue();
-      if (!firstToken) return; // If the first cell of a row is empty that row cannot contain a winner
-      
-      const matchesFirstToken = (cell) => cell.getValue() === firstToken;
-      
-      if (board[i].every( (cell) => matchesFirstToken(cell))) {
-        console.log(`${getActivePlayer().name} wins!`)
+    // const matchesFirstToken = (cell, firstToken) => cell === firstToken;
+    const arrayTest = (cellArray) => {
+      console.log(`Testing the array: ${cellArray}`);
+      if (
+        cellArray[0] &&
+        // cellArray.every( (cell) => matchesFirstToken(cell, cellArray[0]))
+        cellArray.every( (cell) => cell === cellArray[0])
+      ) {
+        return true;
+      }
+    }
+
+    // Check each row for a win
+    for ( let i = 0; i < board.length; i++) {
+      let testArray = [];
+      for (let j = 0; j < board[0].length; j++) {
+        testArray.push(board[i][j].getValue());
+      }
+      if (arrayTest(testArray)) {
+        console.log(`${activePlayer.name} won on a row`);
+        return true;
+      }
+    }
+
+    // Check each column for a win
+    for ( let i = 0; i < board.length; i++) {
+      let testArray = [];
+      for (let j = 0; j < board[0].length; j++) {
+        testArray.push(board[j][i].getValue());
+      }
+      if (arrayTest(testArray)) {
+        console.log(`${activePlayer.name} won on a column`);
+        return true;
+      }
+    }
+
+    // Check TOP-LEFT to BOTTOM-RIGHT diagonal
+    const diagonalTest1 = (function () {
+      let testArray = [];
+      for (let i = 0; i < board.length; i ++) {
+        testArray.push(board[i][i].getValue());
+      }
+      if (arrayTest(testArray)) {
+        console.log(`${activePlayer.name} won on a diagonal1`);
+        return true;
+      }
+    })();
+    
+    // check TOP-RIGHT to BOTTOM-LEFT diagonal
+    const diagonalTest2 = function () {
+      let testArray = [];
+      for (let i = 0; i < board.length; i ++) {
+        testArray.push(board[i][board.length - (i+1)].getValue());
+      }
+      if (arrayTest(testArray)) {
+        console.log(`${activePlayer.name} won on a reverse diagonal`);
         return true;
       }
     };
-
-    //Check each of the columns
-    //for (let i = 0; i < board.length
+    if (diagonalTest2()) return true;
+    
   };
   
   printNewRound();
@@ -127,8 +173,8 @@ game = GameController();
 
 //run test game
 
-game.playRound({row:0, column:0}) // Player 1 first turn
-game.playRound({row:1, column:0}) // Player 2 first turn
-game.playRound({row:0, column:1}) // Player 1 2nd turn
-game.playRound({row:1, column:1}) // Player 2 2nd turn
-game.playRound({row:0, column:2}) // Player 1 first turn - PLAYER 1 SHOULD WIN!
+game.playRound({row:0, column:2}) // Player 1 first turn
+game.playRound({row:0, column:1}) // Player 2 first turn
+game.playRound({row:1, column:1}) // Player 1 2nd turn
+game.playRound({row:1, column:2}) // Player 2 2nd turn
+game.playRound({row:2, column:0}) // Player 1 first turn - PLAYER 1 SHOULD WIN!
