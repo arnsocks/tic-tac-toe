@@ -85,28 +85,32 @@ const GameController = function (
     
     
 
-    // TODO - Logic to determine if there is an endstate
-    // if (checkForWinner(board.getBoard())) return;
+    // TODO - Logic to determine if there is a result
+    if (checkResult(board.getBoard())) return;
     switchPlayerTurn();
     printNewRound();
   };
 
-  // const checkForWinner = (board) => {
-  //   //Check each of the rows
-  //   for (let i = 0; i < board.length; i++) {
-  //     const firstToken = board[i][0].getValue();
-  //     const matchesFirstToken = (cell) => cell.getValue() === firstToken;
-  //     if (!firstToken) return;
-  //     console.log({firstToken});
-  //     if (board[i].every( (cell) => matchesFirstToken(cell))) {
-  //       console.log(`${getActivePlayer().name} wins!`)
-  //       return true;
-  //     }
-  //   };
+  function checkResult(board) {
+    
+    let gameResult = '';
 
-  //   //Check each of the columns
-  //   //for (let i = 0; i < board.length
-  // };
+    //Check each of the rows
+    for (let i = 0; i < board.length; i++) {
+      const firstToken = board[i][0].getValue();
+      if (!firstToken) return; // If the first cell of a row is empty that row cannot contain a winner
+      
+      const matchesFirstToken = (cell) => cell.getValue() === firstToken;
+      
+      if (board[i].every( (cell) => matchesFirstToken(cell))) {
+        console.log(`${getActivePlayer().name} wins!`)
+        return true;
+      }
+    };
+
+    //Check each of the columns
+    //for (let i = 0; i < board.length
+  };
   
   printNewRound();
 
