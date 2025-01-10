@@ -48,7 +48,7 @@ const GameController = function (
   playerOneName = "Player One",
   playerTwoName = "Player Two"
 ) {
-  const board = GameBoard();
+  const gameBoard = GameBoard();
   const players = [
     {
       name: playerOneName,
@@ -69,38 +69,39 @@ const GameController = function (
   
   const printNewRound = () => {
     console.log(activePlayer.name + "'s turn!");
-    board.printBoard();
+    gameBoard.printBoard();
   }
 
   const playRound = (cell) => {
-
+    let gameResult = '';
     // Don't accept a non-empty cell
-    if (board.getBoard()[cell.row][cell.column].getValue() !== 0) {
-      console.log("You cannot play in a non-empty cell");
-      printNewRound();
-      return;
-    } 
+    // if (gameBoard.getBoard()[cell.row][cell.column].getValue() !== 0) {
+    //   console.log("You cannot play in a non-empty cell");
+    //   printNewRound();
+    //   return;
+    // } 
 
-    board.placeToken(cell, getActivePlayer());
-    
-    
-
-    // TODO - Logic to determine if there is a result
-    if (checkResult(board.getBoard())) return;
-    switchPlayerTurn();
+    gameBoard.placeToken(cell, getActivePlayer());
     printNewRound();
+    
+    gameResult = checkResult(gameBoard.getBoard());
+    if (gameResult === 'win') {
+      return `${activePlayer.name} wins!`
+    } else if (gameResult === 'draw') {
+      return `It's a draw`;
+    };
+
+    switchPlayerTurn();
   };
 
   function checkResult(board) {
-    
-    let gameResult = '';
+  
+    const boardSize = board.length;
 
-    // const matchesFirstToken = (cell, firstToken) => cell === firstToken;
-    const arrayTest = (cellArray) => {
-      console.log(`Testing the array: ${cellArray}`);
+    // If every item on the line matches and is non-zero then the line is a win
+    const lineMatches = (cellArray) => {
       if (
         cellArray[0] &&
-        // cellArray.every( (cell) => matchesFirstToken(cell, cellArray[0]))
         cellArray.every( (cell) => cell === cellArray[0])
       ) {
         return true;
@@ -108,54 +109,54 @@ const GameController = function (
     }
 
     // Check each row for a win
-    for ( let i = 0; i < board.length; i++) {
-      let testArray = [];
-      for (let j = 0; j < board[0].length; j++) {
-        testArray.push(board[i][j].getValue());
+    for ( let i = 0; i < boardSize; i++) {
+      let testRow = [];
+      for (let j = 0; j < boardSize; j++) {
+        testRow.push(board[i][j].getValue());
       }
-      if (arrayTest(testArray)) {
-        console.log(`${activePlayer.name} won on a row`);
-        return true;
+      if (lineMatches(testRow)) {
+        return `win`;
       }
     }
 
     // Check each column for a win
-    for ( let i = 0; i < board.length; i++) {
-      let testArray = [];
-      for (let j = 0; j < board[0].length; j++) {
-        testArray.push(board[j][i].getValue());
+    for ( let i = 0; i < boardSize; i++) {
+      let testCol = [];
+      for (let j = 0; j < boardSize; j++) {
+        testCol.push(board[j][i].getValue());
       }
-      if (arrayTest(testArray)) {
-        console.log(`${activePlayer.name} won on a column`);
-        return true;
+      if (lineMatches(testCol)) {
+        return 'win';
       }
     }
-
-    // Check TOP-LEFT to BOTTOM-RIGHT diagonal
-    const diagonalTest1 = (function () {
-      let testArray = [];
-      for (let i = 0; i < board.length; i ++) {
-        testArray.push(board[i][i].getValue());
-      }
-      if (arrayTest(testArray)) {
-        console.log(`${activePlayer.name} won on a diagonal1`);
-        return true;
-      }
-    })();
     
-    // check TOP-RIGHT to BOTTOM-LEFT diagonal
-    const diagonalTest2 = function () {
-      let testArray = [];
-      for (let i = 0; i < board.length; i ++) {
-        testArray.push(board[i][board.length - (i+1)].getValue());
+    // Check TOP-LEFT to BOTTOM-RIGHT diagonal
+    const diagTest1 = function () {
+      let testDiag = [];
+      for (let i = 0; i < boardSize; i ++) {
+        testDiag.push(board[i][i].getValue());
       }
-      if (arrayTest(testArray)) {
-        console.log(`${activePlayer.name} won on a reverse diagonal`);
+      if (lineMatches(testDiag)) {
         return true;
       }
     };
-    if (diagonalTest2()) return true;
+    if (diagTest1()) return 'win';
     
+    // check TOP-RIGHT to BOTTOM-LEFT diagonal
+    const diagTest2 = function () {
+      let testDiag = [];
+      for (let i = 0; i < boardSize; i ++) {
+        testDiag.push(board[i][boardSize - (i+1)].getValue());
+      }
+      if (lineMatches(testDiag)) {
+        return true;
+      }
+    };
+    if (diagTest2()) return 'win';
+
+    // check for a DRAW 
+    // if every cell is non zero and there's no winner then it's a draw
+    if (board.flat().every( (cell) => cell.getValue())) return 'draw';
   };
   
   printNewRound();
@@ -164,7 +165,7 @@ const GameController = function (
   return {
     getActivePlayer,
     playRound,
-    getBoard: board.getBoard
+    getBoard: gameBoard.getBoard
   };
 }
 
@@ -173,8 +174,20 @@ game = GameController();
 
 //run test game
 
-game.playRound({row:0, column:2}) // Player 1 first turn
+// game.playRound({row:0, column:2}) // Player 1 first turn
+// game.playRound({row:1, column:0}) // Player 2 first turn
+// game.playRound({row:1, column:1}) // Player 1 2nd turn
+// game.playRound({row:1, column:2}) // Player 2 2nd turn
+// game.playRound({row:2, column:0}) // Player 1 first turn - PLAYER 1 SHOULD WIN!
+
+
+//test game should be a draw
+game.playRound({row:0, column:0}) // Player 1 first turn
 game.playRound({row:0, column:1}) // Player 2 first turn
-game.playRound({row:1, column:1}) // Player 1 2nd turn
-game.playRound({row:1, column:2}) // Player 2 2nd turn
-game.playRound({row:2, column:0}) // Player 1 first turn - PLAYER 1 SHOULD WIN!
+game.playRound({row:1, column:0}); // 1
+game.playRound({row:1, column:1}); // 2
+game.playRound({row:2, column:2}); // 1
+game.playRound({row:2, column:0}); // 2
+game.playRound({row:2, column:1}); // 1
+game.playRound({row:1, column:2}); // 2
+game.playRound({row:0, column:2}); // 1
