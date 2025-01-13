@@ -44,6 +44,9 @@ const GameBoard = (function () {
 
 const GameController = (() => {
   //const gameBoard = GameBoard();
+
+  let gameStatus = '';
+  
   const players = [
     {
       name: 'Player One',
@@ -65,6 +68,7 @@ const GameController = (() => {
   
   const printNewRound = () => {
     console.log(activePlayer.name + "'s turn!");
+    gameStatus = `${activePlayer.name}'s turn!`;
     GameBoard.printBoard();
   }
 
@@ -78,16 +82,21 @@ const GameController = (() => {
     } 
 
     GameBoard.placeToken(cell, getActivePlayer());
-    printNewRound();
+    // switchPlayerTurn();
+    // printNewRound();
     
     gameResult = checkResult(GameBoard.getBoard());
     if (gameResult === 'win') {
-      console.log(`${activePlayer.name} wins!`)
-      return `${activePlayer.name} wins!`
+      console.log(`${activePlayer.name} wins!`);
+      gameStatus = `${activePlayer.name} wins!`;
+      return;
     } else if (gameResult === 'draw') {
       console.log(`It's a draw`);
-      return `It's a draw`;
-    } else switchPlayerTurn(); // If there's no result keep playing
+      gameStatus = `It's a draw!`;
+      return;
+    }
+    switchPlayerTurn();
+    printNewRound();
   };
 
   const setPlayerName = (index, playerName) => {
@@ -159,12 +168,15 @@ const GameController = (() => {
     if (board.flat().every( (cell) => cell.getValue())) return 'draw';
   };
 
+  const getGameStatus = () => gameStatus;
+
   printNewRound(); //Print the board for the first round
 
   return {
     getActivePlayer,
     playRound,
-    setPlayerName
+    setPlayerName,
+    getGameStatus
   };
 })();
 
@@ -180,7 +192,7 @@ const ScreenController = (() => {
     const board = GameBoard.getBoard();
     const activePlayer = GameController.getActivePlayer();
 
-    outputDiv.textContent = `${activePlayer.name}'s turn!`;
+    outputDiv.textContent = GameController.getGameStatus();
 
     // Render the board grid cells
     board.forEach((row, rowIndex) => {
