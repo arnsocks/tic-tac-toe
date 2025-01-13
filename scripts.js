@@ -1,4 +1,4 @@
-const GameBoard = (function () {
+const GameBoard = function () {
   const rows = 3;
   const columns = 3;
   let board = [];
@@ -46,10 +46,10 @@ const GameBoard = (function () {
     printBoard,
     setBoard
   };
-})();
+};
 
 const GameController = (() => {
-  //const gameBoard = GameBoard();
+  const gameBoard = GameBoard();
 
   let gameStatus = '';
   
@@ -75,23 +75,23 @@ const GameController = (() => {
   const printNewRound = () => {
     console.log(activePlayer.name + "'s turn!");
     gameStatus = `${activePlayer.name}'s turn!`;
-    GameBoard.printBoard();
+    gameBoard.printBoard();
   }
 
   const playRound = (cell) => {
     let gameResult = '';
     // Don't accept a non-empty cell
-    if (GameBoard.getBoard()[cell.row][cell.column].getValue()) {
+    if (gameBoard.getBoard()[cell.row][cell.column].getValue()) {
       console.log("You cannot play in a non-empty cell");
       printNewRound();
       return;
     } 
 
-    GameBoard.placeToken(cell, getActivePlayer());
+    gameBoard.placeToken(cell, getActivePlayer());
     // switchPlayerTurn();
     // printNewRound();
     
-    gameResult = checkResult(GameBoard.getBoard());
+    gameResult = checkResult(gameBoard.getBoard());
     if (gameResult === 'win') {
       console.log(`${activePlayer.name} wins!`);
       gameStatus = `${activePlayer.name} wins!`;
@@ -178,7 +178,7 @@ const GameController = (() => {
 
   const resetGame = () => {
     activePlayer = players[0];
-    GameBoard.setBoard();
+    gameBoard.setBoard();
     gameStatus = '';
     printNewRound();
 
@@ -191,7 +191,8 @@ const GameController = (() => {
     playRound,
     setPlayerName,
     getGameStatus,
-    resetGame
+    resetGame,
+    getBoard: gameBoard.getBoard
   };
 })();
 
@@ -205,7 +206,7 @@ const ScreenController = (() => {
   const updateScreen = () => {
     boardDiv.textContent = ''; //clear the board
 
-    const board = GameBoard.getBoard();
+    const board = GameController.getBoard();
     const activePlayer = GameController.getActivePlayer();
 
     outputDiv.textContent = GameController.getGameStatus();
