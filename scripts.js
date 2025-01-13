@@ -3,10 +3,13 @@ const GameBoard = (function () {
   const columns = 3;
   let board = [];
 
-  for(i = 0; i < rows; i++) {
-    board[i] = [];
-    for(j = 0; j < columns; j++) {
-      board[i].push(Cell());
+  const setBoard = () => {
+    board = [];
+    for(i = 0; i < rows; i++) {
+      board[i] = [];
+      for(j = 0; j < columns; j++) {
+        board[i].push(Cell());
+      }
     }
   }
 
@@ -23,8 +26,8 @@ const GameBoard = (function () {
 
   function Cell() {
     let value = '';
-    const addToken = (player) => {
-      value = player;
+    const addToken = (token) => {
+      value = token;
     }
 
     const getValue = () => value;
@@ -35,10 +38,13 @@ const GameBoard = (function () {
     };
   };
 
+  setBoard();
+
   return {
     getBoard,
     placeToken,
-    printBoard
+    printBoard,
+    setBoard
   };
 })();
 
@@ -170,13 +176,22 @@ const GameController = (() => {
 
   const getGameStatus = () => gameStatus;
 
+  const resetGame = () => {
+    activePlayer = players[0];
+    GameBoard.setBoard();
+    gameStatus = '';
+    printNewRound();
+
+  }
+
   printNewRound(); //Print the board for the first round
 
   return {
     getActivePlayer,
     playRound,
     setPlayerName,
-    getGameStatus
+    getGameStatus,
+    resetGame
   };
 })();
 
@@ -228,8 +243,8 @@ const ScreenController = (() => {
     updateScreen();
   }
   function resetGame() {
-    console.log('You want to reset the game!');
-    console.log(GameBoard.getBoard());
+    GameController.resetGame();
+    updateScreen();
   }
 
   // ** EVENT HANDLERS **
