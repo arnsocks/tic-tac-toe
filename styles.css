@@ -1,12 +1,21 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --bgColor: #FAECE5;
+  --blue: #2162A6;
+}
+
 body {
-  background-color: #FAECE5;
+  background-color: var(--bgColor);
   text-align: center;
-  color: #2162a6;
+  color: var(--blue);
   font-family: monospace;
 }
 
 header {
-  color: #2162A6;
+  color: var(--blue);
   font-size: 1.5rem;
   text-decoration: wavy underline;
 }
@@ -23,11 +32,11 @@ header {
   grid-template-rows: repeat(3, 1fr);
   margin: auto;
   gap: 5px;
-  background-color: #2162A6;
+  background-color: var(--blue);
 }
 
 .cell {
-  background-color: #FAECE5;
+  background-color: var(--bgColor);
   border: none;
   font-family: monospace;
   font-size: 5rem;
@@ -39,4 +48,25 @@ header {
 
 .O {
   color: #75b09c;
+}
+
+#reset {
+  margin-top: 2rem;
+  background-color: var(--bgColor);
+  color: var(--blue);
+  font-size: 2rem;
+  font-family: monospace;
+  padding: 0.5rem;
+  width: calc(500px/3);
+  border: 5px solid var(--blue);
+  box-shadow: 5px 5px rgba(0, 0, 0, 0.4);
+}
+
+#reset:hover {
+  box-shadow: 5px 5px rgba(0, 0, 0, 0.8);
+}
+
+#reset:active {
+  background-color: var(--blue);
+  color: var(--bgColor);
 }
