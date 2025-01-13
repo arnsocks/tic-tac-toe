@@ -214,8 +214,9 @@ const ScreenController = (() => {
       row: e.target.dataset.row,
       column: e.target.dataset.col
     };
+    console.log({selectedCell})
 
-    if (!selectedCell) return; // Make sure user clicked a cell
+    if (!selectedCell.row) return; // Make sure user clicked a cell
 
     GameController.playRound(selectedCell);
     updateScreen();
