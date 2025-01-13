@@ -170,6 +170,31 @@ const GameController = (() => {
 
 const ScreenController = (() => {
   // DECLARE DOM objects into variables
+  const outputDiv = document.querySelector('#output');
+  const boardDiv = document.querySelector('#game-board');
+
+  const updateScreen = () => {
+    boardDiv.textContent = ''; //clear the board
+
+    const board = GameBoard.getBoard();
+    const activePlayer = GameController.getActivePlayer();
+
+    outputDiv.textContent = `${activePlayer.name}'s turn!`;
+
+    board.forEach((row, rowIndex) => {
+      row.forEach((cell, colIndex) => {
+        const cellButton = document.createElement("button");
+        cellButton.classList.add("cell");
+
+        cellButton.dataset.row = rowIndex;
+        cellButton.dataset.col = colIndex;
+        cellButton.textContent = cell.getValue();
+        boardDiv.append(cellButton);
+      })
+    })
+  };
+
+  updateScreen();
 
   // ** METHODS **
 
@@ -182,11 +207,11 @@ const ScreenController = (() => {
 
 //run test game
 
-GameController.playRound({row:0, column:2}) // Player 1 first turn
-GameController.playRound({row:1, column:0}) // Player 2 first turn
-GameController.playRound({row:1, column:1}) // Player 1 2nd turn
-GameController.playRound({row:1, column:2}) // Player 2 2nd turn
-GameController.playRound({row:2, column:0}) // Player 1 first turn - PLAYER 1 SHOULD WIN!
+// GameController.playRound({row:0, column:2}) // Player 1 first turn
+// GameController.playRound({row:1, column:0}) // Player 2 first turn
+// GameController.playRound({row:1, column:1}) // Player 1 2nd turn
+// GameController.playRound({row:1, column:2}) // Player 2 2nd turn
+// GameController.playRound({row:2, column:0}) // Player 1 first turn - PLAYER 1 SHOULD WIN!
 
 
 // //test game should be a draw

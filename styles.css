@@ -1,3 +1,25 @@
 body {
   background-color: #FAECE5;
+  text-align: center;
+  color: #2162a6;
+  font-family: monospace;
+}
+
+header {
+  color: #2161A6;
+  font-size: 1.5rem;
+  text-decoration: wavy underline;
+  /* text-decoration-thickness: 5px; */
+}
+
+#output {
+
+}
+
+#game-board {
+  display: grid;
+  height: 500px;
+  width: 500px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
 }
