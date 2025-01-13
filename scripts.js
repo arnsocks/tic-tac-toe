@@ -184,6 +184,7 @@ const ScreenController = (() => {
   // DECLARE DOM objects into variables
   const outputDiv = document.querySelector('#output');
   const boardDiv = document.querySelector('#game-board');
+  const resetBtn = document.querySelector('#reset');
 
   // ** METHODS **
   const updateScreen = () => {
@@ -212,7 +213,8 @@ const ScreenController = (() => {
       })
     })
   };
-  // TODO Handle Click Events
+
+  // ** EVENT HANDLER FUNCTIONS **
   function clickHandlerBoard(e) {
     const selectedCell = {
       row: e.target.dataset.row,
@@ -225,7 +227,15 @@ const ScreenController = (() => {
     GameController.playRound(selectedCell);
     updateScreen();
   }
+  function resetGame() {
+    console.log('You want to reset the game!');
+    console.log(GameBoard.getBoard());
+  }
+
+  // ** EVENT HANDLERS **
+
   boardDiv.addEventListener("click", clickHandlerBoard);
+  resetBtn.addEventListener("click", resetGame);
 
   updateScreen();
 

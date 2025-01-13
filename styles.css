@@ -31,13 +31,13 @@ header {
   background-color: #FAECE5;
   border: none;
   font-family: monospace;
-  font-size: 3rem;
+  font-size: 5rem;
 }
 
 .X {
-  color: red;
+  color: #e365c1;
 }
 
 .O {
-  color: green;
+  color: #75b09c;
 }
