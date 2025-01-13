@@ -173,6 +173,7 @@ const ScreenController = (() => {
   const outputDiv = document.querySelector('#output');
   const boardDiv = document.querySelector('#game-board');
 
+  // ** METHODS **
   const updateScreen = () => {
     boardDiv.textContent = ''; //clear the board
 
@@ -181,6 +182,7 @@ const ScreenController = (() => {
 
     outputDiv.textContent = `${activePlayer.name}'s turn!`;
 
+    // Render the board grid cells
     board.forEach((row, rowIndex) => {
       row.forEach((cell, colIndex) => {
         const cellButton = document.createElement("button");
@@ -189,20 +191,30 @@ const ScreenController = (() => {
         cellButton.dataset.row = rowIndex;
         cellButton.dataset.col = colIndex;
         cellButton.textContent = cell.getValue();
+        cellButton.classList.add(cell.getValue());
         boardDiv.append(cellButton);
       })
     })
   };
+  // TODO Handle Click Events
+  function clickHandlerBoard(e) {
+    const selectedCell = {
+      row: e.target.dataset.row,
+      column: e.target.dataset.col
+    };
+
+    if (!selectedCell) return; // Make sure user clicked a cell
+
+    GameController.playRound(selectedCell);
+    updateScreen();
+  }
+  boardDiv.addEventListener("click", clickHandlerBoard);
 
   updateScreen();
 
-  // ** METHODS **
-
-  // Update Screen
-
-  // Handle Click Events
-
-
+  return {
+    updateScreen
+  }
 })();
 
 //run test game

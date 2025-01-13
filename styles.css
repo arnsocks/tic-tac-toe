@@ -6,14 +6,14 @@ body {
 }
 
 header {
-  color: #2161A6;
+  color: #2162A6;
   font-size: 1.5rem;
   text-decoration: wavy underline;
   /* text-decoration-thickness: 5px; */
 }
 
 #output {
-
+  margin-bottom: 2rem;
 }
 
 #game-board {
@@ -22,4 +22,21 @@ header {
   width: 500px;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
+  margin: auto;
+  gap: 0;
+}
+
+.cell {
+  background-color: #FAECE5;
+  border: 1px solid #2162a6;
+  font-family: monospace;
+  font-size: 3rem;
+}
+
+.X {
+  color: red;
+}
+
+.O {
+  color: green;
 }
