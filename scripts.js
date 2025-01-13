@@ -22,7 +22,7 @@ const GameBoard = (function () {
   };
 
   function Cell() {
-    let value = 0;
+    let value = '';
     const addToken = (player) => {
       value = player;
     }
@@ -75,7 +75,7 @@ const GameController = (() => {
   const playRound = (cell) => {
     let gameResult = '';
     // Don't accept a non-empty cell
-    if (GameBoard.getBoard()[cell.row][cell.column].getValue() !== 0) {
+    if (GameBoard.getBoard()[cell.row][cell.column].getValue()) {
       console.log("You cannot play in a non-empty cell");
       printNewRound();
       return;
@@ -203,7 +203,11 @@ const ScreenController = (() => {
         cellButton.dataset.row = rowIndex;
         cellButton.dataset.col = colIndex;
         cellButton.textContent = cell.getValue();
-        cellButton.classList.add(cell.getValue());
+        if (!cell.getValue()) {
+          cellButton.classList.add('empty');
+        } else {
+          cellButton.classList.add(cell.getValue());
+        }
         boardDiv.append(cellButton);
       })
     })
@@ -216,7 +220,7 @@ const ScreenController = (() => {
     };
     console.log({selectedCell})
 
-    if (!selectedCell.row) return; // Make sure user clicked a cell
+    if (!selectedCell.row) return; // Make sure user clicked an actual cell
 
     GameController.playRound(selectedCell);
     updateScreen();
