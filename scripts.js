@@ -258,8 +258,8 @@ const ScreenController = (() => {
   boardDiv.addEventListener("click", clickHandlerBoard);
   resetBtn.addEventListener("click", resetGame);
   startBtn.addEventListener("click", () => {
-    GameController.setPlayerName(0, p1Name.value);
-    GameController.setPlayerName(1, p2Name.value);
+    if (p1Name.value) GameController.setPlayerName(0, p1Name.value);
+    if (p2Name.value) GameController.setPlayerName(1, p2Name.value);
     newGameDiag.close();
     updateScreen();
   })

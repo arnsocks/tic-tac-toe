@@ -20,11 +20,6 @@ header {
   text-decoration: wavy underline;
 }
 
-.purple {
-  background-color: purple;
-  color: red;
-}
-
 #output {
   margin-bottom: 2rem;
 }
@@ -74,4 +69,9 @@ header {
 #reset:active {
   background-color: var(--blue);
   color: var(--bgColor);
+}
+
+dialog li {
+  list-style: none;
+  margin: 10px;
 }
