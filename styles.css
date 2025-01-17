@@ -20,6 +20,11 @@ header {
   text-decoration: wavy underline;
 }
 
+.purple {
+  background-color: purple;
+  color: red;
+}
+
 #output {
   margin-bottom: 2rem;
 }

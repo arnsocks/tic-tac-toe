@@ -107,6 +107,7 @@ const GameController = (() => {
 
   const setPlayerName = (index, playerName) => {
     players[index].name = playerName;
+    if (activePlayer === players[index]) gameStatus = `${activePlayer.name}'s Turn!`;
   }
   
   function checkResult(board) {
@@ -201,6 +202,10 @@ const ScreenController = (() => {
   const outputDiv = document.querySelector('#output');
   const boardDiv = document.querySelector('#game-board');
   const resetBtn = document.querySelector('#reset');
+  const newGameDiag = document.querySelector('#new-game-dialog');
+  const startBtn = document.querySelector('#start');
+  const p1Name = document.querySelector('#p1-name');
+  const p2Name = document.querySelector('#p2-name');
 
   // ** METHODS **
   const updateScreen = () => {
@@ -252,6 +257,14 @@ const ScreenController = (() => {
 
   boardDiv.addEventListener("click", clickHandlerBoard);
   resetBtn.addEventListener("click", resetGame);
+  startBtn.addEventListener("click", () => {
+    GameController.setPlayerName(0, p1Name.value);
+    GameController.setPlayerName(1, p2Name.value);
+    newGameDiag.close();
+    updateScreen();
+  })
+
+  newGameDiag.showModal();
 
   updateScreen();
 
@@ -259,23 +272,3 @@ const ScreenController = (() => {
     updateScreen
   }
 })();
-
-//run test game
-
-// GameController.playRound({row:0, column:2}) // Player 1 first turn
-// GameController.playRound({row:1, column:0}) // Player 2 first turn
-// GameController.playRound({row:1, column:1}) // Player 1 2nd turn
-// GameController.playRound({row:1, column:2}) // Player 2 2nd turn
-// GameController.playRound({row:2, column:0}) // Player 1 first turn - PLAYER 1 SHOULD WIN!
-
-
-// //test game should be a draw
-// game.playRound({row:0, column:0}) // Player 1 first turn
-// game.playRound({row:0, column:1}) // Player 2 first turn
-// game.playRound({row:1, column:0}); // 1
-// game.playRound({row:1, column:1}); // 2
-// game.playRound({row:2, column:2}); // 1
-// game.playRound({row:2, column:0}); // 2
-// game.playRound({row:2, column:1}); // 1
-// game.playRound({row:1, column:2}); // 2
-// game.playRound({row:0, column:2}); // 1
