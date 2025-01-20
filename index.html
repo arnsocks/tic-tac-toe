@@ -12,23 +12,27 @@
   <div id="content">
 
     <dialog id="new-game-dialog">
-      <form>
-        <p>Enter Player Names:</p>
-        <li>
-          <label for="p1-name">1: </label>
-          <input type="text" name="p1-name" id="p1-name" placeholder="Player One">
-        </li>
-        <li>
-          <label for="p2-name">2: </label>
-          <input type="text" name="p2-name" id="p2-name" placeholder="Player Two">
-        </li>
-        <button type="button" id="start" formmethod="dialog">Start!</button>
-      </form>
+      <div class="dialog-content">
+        <form>
+          <p class="dialog-text">Enter Player Names:</p>
+          <li>
+            <label for="p1-name">1: </label>
+            <input type="text" name="p1-name" id="p1-name" placeholder="Player One">
+          </li>
+          <li>
+            <label for="p2-name">2: </label>
+            <input type="text" name="p2-name" id="p2-name" placeholder="Player Two">
+          </li>
+          <button type="button" id="start" formmethod="dialog">Start!</button>
+        </form>
+      </div>
     </dialog>
 
     <dialog id="end-game-dialog">
-      <p id="game-result-output">test result</p>
-      <button type="button" id="play-again" formmethod="dialog">Play Again</button>
+      <div class="dialog-content">
+        <p id="game-result-output" class="dialog-text">test result</p>
+        <button type="button" id="play-again" formmethod="dialog">Play Again</button>
+      </div>
     </dialog>
 
     <div id = "output">

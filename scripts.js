@@ -248,7 +248,6 @@ const ScreenController = (() => {
     const gameStatus = GameController.getGameStatus();
     if (gameStatus.includes('wins') || gameStatus.includes('draw')) {
       endGameDiag.showModal();
-      gameResultOutput.classList.add('test');
       gameResultOutput.textContent = gameStatus;
     }
   }
