@@ -78,6 +78,13 @@ const GameController = (() => {
     gameBoard.printBoard();
   }
 
+  const setPlayerName = (index, playerName) => {
+    players[index].name = playerName;
+
+    // Force gameStatus update to reflect active play name change
+    if (activePlayer === players[index]) gameStatus = `${activePlayer.name}'s Turn!`;
+  }
+
   const playRound = (cell) => {
     let gameResult = '';
     // Don't accept a non-empty cell
@@ -105,10 +112,7 @@ const GameController = (() => {
     printNewRound();
   };
 
-  const setPlayerName = (index, playerName) => {
-    players[index].name = playerName;
-    if (activePlayer === players[index]) gameStatus = `${activePlayer.name}'s Turn!`;
-  }
+  
   
   function checkResult(board) {
     
@@ -206,13 +210,16 @@ const ScreenController = (() => {
   const startBtn = document.querySelector('#start');
   const p1Name = document.querySelector('#p1-name');
   const p2Name = document.querySelector('#p2-name');
+  const endGameDiag = document.querySelector('#end-game-dialog');
+  const gameResultOutput = document.querySelector('#game-result-output');
+  const playAgainBtn = document.querySelector('#play-again');
 
   // ** METHODS **
   const updateScreen = () => {
     boardDiv.textContent = ''; //clear the board
 
     const board = GameController.getBoard();
-    const activePlayer = GameController.getActivePlayer();
+    // const activePlayer = GameController.getActivePlayer();
 
     outputDiv.textContent = GameController.getGameStatus();
 
@@ -233,7 +240,18 @@ const ScreenController = (() => {
         boardDiv.append(cellButton);
       })
     })
+
   };
+
+  // Show the end game modal if there is an EndState
+  const checkForEndState = () => {
+    const gameStatus = GameController.getGameStatus();
+    if (gameStatus.includes('wins') || gameStatus.includes('draw')) {
+      endGameDiag.showModal();
+      gameResultOutput.classList.add('test');
+      gameResultOutput.textContent = gameStatus;
+    }
+  }
 
   // ** EVENT HANDLER FUNCTIONS **
   function clickHandlerBoard(e) {
@@ -247,9 +265,23 @@ const ScreenController = (() => {
 
     GameController.playRound(selectedCell);
     updateScreen();
+    checkForEndState();
   }
+
+  function clickHandlerNewGame() {
+    endGameDiag.close();
+    resetGame();
+  }
+
   function resetGame() {
     GameController.resetGame();
+    updateScreen();
+  }
+
+  function setPlayerNames() {
+    if (p1Name.value) GameController.setPlayerName(0, p1Name.value);
+    if (p2Name.value) GameController.setPlayerName(1, p2Name.value);
+    newGameDiag.close();
     updateScreen();
   }
 
@@ -257,15 +289,12 @@ const ScreenController = (() => {
 
   boardDiv.addEventListener("click", clickHandlerBoard);
   resetBtn.addEventListener("click", resetGame);
-  startBtn.addEventListener("click", () => {
-    if (p1Name.value) GameController.setPlayerName(0, p1Name.value);
-    if (p2Name.value) GameController.setPlayerName(1, p2Name.value);
-    newGameDiag.close();
-    updateScreen();
-  })
+  startBtn.addEventListener("click", setPlayerNames);
+  playAgainBtn.addEventListener("click", clickHandlerNewGame);
+
+  // ** GAME INITIALIZATION **
 
   newGameDiag.showModal();
-
   updateScreen();
 
   return {

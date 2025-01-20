@@ -75,3 +75,8 @@ dialog li {
   list-style: none;
   margin: 10px;
 }
+
+.test {
+  color: red;
+  font-size: 76px;
+}
